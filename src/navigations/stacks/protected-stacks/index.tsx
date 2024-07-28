@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {Stack} from '../../../utilities/navigation';
-import TodoScreen from '../../../screens/protected-screens/todo';
+import TodoScreen from '../../../screens/todo';
 
 const ProtectedStack = (): JSX.Element => {
   return (
