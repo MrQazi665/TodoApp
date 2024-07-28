@@ -6,7 +6,7 @@ export interface User {
   email: string;
 }
 
-export interface Todo {
+interface Todo {
   createdAt: string;
   id: number;
   title: string;

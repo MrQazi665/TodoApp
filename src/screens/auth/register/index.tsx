@@ -26,7 +26,7 @@ const SignUpScreen = () => {
       email: user?.email,
       password: user?.password,
     };
-    dispatch(authCreators.handleSignUp(data));
+    dispatch(authCreators.handleSignUp({data}));
   };
 
   return (
