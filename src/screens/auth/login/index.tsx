@@ -12,7 +12,7 @@ import EyeSvg from '../../../assets/icons/svg/eye.svg';
 import EyeOffSvg from '../../../assets/icons/svg/eyeOff.svg';
 
 import TodoFormTheme from '../../../components/theme/todo-form-theme';
-import {loginValidationSchema} from '../../../utils/yup';
+import {loginValidationSchema} from '../../../utilities/yup';
 
 const Login = () => {
   const navigation: any = useNavigation();

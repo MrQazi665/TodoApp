@@ -11,7 +11,7 @@ import TodoFormTheme from '../../../components/theme/todo-form-theme';
 import FormikFieldWrapper from '../../../components/molecules/formik-field-wrapper';
 import EyeSvg from '../../../assets/icons/svg/eye.svg';
 import EyeOffSvg from '../../../assets/icons/svg/eyeOff.svg';
-import {signupValidationSchema} from '../../../utils/yup';
+import {signupValidationSchema} from '../../../utilities/yup';
 
 const SignUpScreen = () => {
   const navigation: any = useNavigation();

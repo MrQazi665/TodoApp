@@ -10,8 +10,8 @@ import {
   Button,
   Icon,
 } from 'native-base';
-import Search from '../../../assets/icons/svg/search.svg';
-import Add from '../../../assets/icons/svg/addIcon.svg';
+import Search from '../../assets/icons/svg/search.svg';
+import Add from '../../assets/icons/svg/addIcon.svg';
 
 const products = [
   {
