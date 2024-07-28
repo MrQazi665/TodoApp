@@ -1,16 +1,13 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import AuthStack from './stacks/auth-stack';
-import {NativeBaseProvider} from 'native-base';
 import ProtectedStack from './stacks/protected-stacks';
+import AuthStack from './stacks/auth-stack';
 
 export default function Navigation() {
   return (
-    <NativeBaseProvider>
-      <NavigationContainer>
-        <ProtectedStack />
-        {/* <AuthStack /> */}
-      </NavigationContainer>
-    </NativeBaseProvider>
+    <NavigationContainer>
+      <AuthStack />
+      {/* <ProtectedStack /> */}
+    </NavigationContainer>
   );
 }

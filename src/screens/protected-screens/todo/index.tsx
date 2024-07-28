@@ -8,11 +8,10 @@ import {
   VStack,
   Input,
   Button,
-  IconButton,
   Icon,
 } from 'native-base';
 import Search from '../../../assets/icons/svg/search.svg';
-import Add from '../../../assets/icons/svg/Add.svg';
+import Add from '../../../assets/icons/svg/addIcon.svg';
 
 const products = [
   {

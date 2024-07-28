@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux';
 
 const rootReducer = combineReducers({
-  auth: '',
-  onBoarding: '',
+  // auth: '',
+  // onBoarding: '',
 });
 
 export default rootReducer;

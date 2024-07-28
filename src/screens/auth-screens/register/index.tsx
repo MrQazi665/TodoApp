@@ -1,64 +1,72 @@
-import React from 'react';
-import {
-  Box,
-  Button,
-  Center,
-  FormControl,
-  Input,
-  VStack,
-  Text,
-  Link,
-  HStack,
-  Image,
-} from 'native-base';
+import React, {useState} from 'react';
+import {Button, Text, HStack, View} from 'native-base';
+import {Formik} from 'formik';
 import {useNavigation} from '@react-navigation/native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+
+import TodoFormTheme from '../../../components/theme/todo-form-theme';
+import FormikFieldWrapper from '../../../components/molecules/formik-field-wrapper';
+import EyeSvg from '../../../assets/icons/svg/eye.svg';
+import EyeOffSvg from '../../../assets/icons/svg/eyeOff.svg';
+import {signupValidationSchema} from '../../../utils/yup';
 
 const SignUpScreen = () => {
   const navigation: any = useNavigation();
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
-    <Center flex={1} px="3">
-      <Box safeArea p="2" py="8" w="90%" maxW="290">
-        <VStack space={3} mt="5" alignItems="center">
-          <Image
-            source={require('../../../assets/icons/checkmark.png')}
-            alt="App Logo"
-            style={{width: 60, height: 50}}
-          />
-          <Text mt="1" fontSize="lg" color="coolGray.600" fontWeight="medium">
-            Create an account
-          </Text>
-          <FormControl>
-            <FormControl.Label>Username</FormControl.Label>
-            <Input placeholder="name@company.com" />
-          </FormControl>
-          <FormControl>
-            <FormControl.Label>Email</FormControl.Label>
-            <Input placeholder="name@company.com" />
-          </FormControl>
-          <FormControl>
-            <FormControl.Label>Password</FormControl.Label>
-            <Input type="password" placeholder="********" />
-          </FormControl>
-          <Button
-            mt="2"
-            colorScheme="blue"
-            onPress={() => navigation.navigate('TodoScreen')}>
-            Create an account
-          </Button>
-          <HStack mt="6" justifyContent="center">
-            <Text fontSize="sm" color="coolGray.600">
-              Already have an account?{' '}
-            </Text>
-            <Text
-              fontSize="sm"
-              color="blue.500"
-              onPress={() => navigation.navigate('Login')}>
-              Login here
-            </Text>
-          </HStack>
-        </VStack>
-      </Box>
-    </Center>
+    <TodoFormTheme formTitle="Create an account">
+      <Formik
+        initialValues={{
+          username: '',
+          password: '',
+          email: '',
+        }}
+        validationSchema={signupValidationSchema}
+        onSubmit={values => console.log('xx- va', values)}>
+        {({handleSubmit}) => (
+          <View>
+            <FormikFieldWrapper name="username" label="Username" mt={0.1} />
+            <FormikFieldWrapper name="email" label="Email" />
+            <FormikFieldWrapper
+              name="password"
+              label="Password"
+              inputRightIcon={
+                showPassword ? (
+                  <EyeOffSvg width={wp(5.5)} height={hp(3.3)} />
+                ) : (
+                  <EyeSvg width={wp(5.5)} height={hp(3.3)} />
+                )
+              }
+              secureTextEntry={!showPassword}
+              inputRightIconOperations={() => setShowPassword(!showPassword)}
+            />
+
+            <Button
+              mt="4"
+              size={'lg'}
+              colorScheme="blue"
+              onPress={() => handleSubmit()}>
+              Sign in
+            </Button>
+          </View>
+        )}
+      </Formik>
+      <HStack mt="2" justifyContent="center">
+        <Text fontSize="sm" color="coolGray.600">
+          Already have an account?{' '}
+        </Text>
+        <Text
+          fontSize="sm"
+          color="blue.500"
+          onPress={() => navigation.navigate('Login')}>
+          Login here
+        </Text>
+      </HStack>
+    </TodoFormTheme>
   );
 };
 

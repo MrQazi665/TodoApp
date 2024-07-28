@@ -1,20 +1,18 @@
-import {View, Text} from 'react-native';
 import React from 'react';
-import store from './redux/store';
 import configureStore from './redux/store';
 import {Provider} from 'react-redux';
-import {PersistGate} from 'redux-persist/integration/react';
 import initialState from './redux/store/initialState';
 import Navigation from './navigations';
+import {NativeBaseProvider} from 'native-base';
+import customTheme from './config/theme';
 
 export default function App() {
   const {store, persistor} = configureStore(initialState);
   return (
-    <Navigation />
-    // <Provider store={store}>
-    //   <PersistGate loading={null} persistor={persistor}>
-    //     <Navigation />
-    //   </PersistGate>
-    // </Provider>
+    <Provider store={store}>
+      <NativeBaseProvider theme={customTheme}>
+        <Navigation />
+      </NativeBaseProvider>
+    </Provider>
   );
 }
