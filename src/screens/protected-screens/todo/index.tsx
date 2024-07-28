@@ -11,6 +11,8 @@ import {
   IconButton,
   Icon,
 } from 'native-base';
+import Search from '../../../assets/icons/svg/search.svg';
+import Add from '../../../assets/icons/svg/Add.svg';
 
 const products = [
   {
@@ -86,7 +88,7 @@ const products = [
 ];
 
 const TodoScreen = () => {
-  const renderItem = ({item}) => (
+  const renderItem = ({item}: any) => (
     <HStack style={styles.itemContainer} justifyContent="space-between">
       <Text style={styles.itemText}>{item.name}</Text>
       <Text style={styles.itemText}>{item.category}</Text>
@@ -106,17 +108,24 @@ const TodoScreen = () => {
             borderRadius="10"
             py="1"
             px="2"
-            // InputLeftElement={
-            //   <Icon
-            //     ml="2"
-            //     size="4"
-            //     color="gray.400"
-            //     as={<MaterialIcons name="search" />}
-            //   />
-            // }
+            InputLeftElement={
+              <Icon
+                ml="2"
+                size="4"
+                color="gray.400"
+                as={<Search width={20} height={20} />}
+              />
+            }
           />
-          <Button width="100%">
-            {/* // leftIcon={<Icon as={MaterialIcons} name="add" size="sm" />}> */}
+          <Button
+            width="100%"
+            leftIcon={
+              <Icon
+                as={<Add width={20} height={20} color={'#fff'} />}
+                name="add"
+                size="sm"
+              />
+            }>
             Add Product
           </Button>
           <HStack justifyContent="space-between">
