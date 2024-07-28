@@ -1,13 +1,14 @@
 import React from 'react';
-import configureStore from './redux/store';
 import {Provider} from 'react-redux';
+import {NativeBaseProvider} from 'native-base';
+
+import configureStore from './redux/store';
 import initialState from './redux/store/initialState';
 import Navigation from './navigations';
-import {NativeBaseProvider} from 'native-base';
 import customTheme from './config/theme';
 
 export default function App() {
-  const {store, persistor} = configureStore(initialState);
+  const {store} = configureStore(initialState);
   return (
     <Provider store={store}>
       <NativeBaseProvider theme={customTheme}>

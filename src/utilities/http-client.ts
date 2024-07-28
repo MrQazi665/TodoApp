@@ -8,7 +8,7 @@ const baseURL =
 const axiosService = axios.create({
   baseURL,
   headers: {
-    'Content-Type': 'multipart/form-data',
+    'Content-Type': 'application/json',
   },
 });
 
@@ -21,6 +21,7 @@ axiosService.interceptors.request.use(
       } else if (userAuthToken) {
         config.headers['Authorization'] = `Bearer ${userAuthToken}`;
       }
+
       return config;
     } catch (error) {
       console.error('Error in request interceptor:', error);
@@ -28,7 +29,6 @@ axiosService.interceptors.request.use(
     }
   },
   error => {
-    console.error('Request error:', error);
     return Promise.reject(error);
   },
 );
@@ -38,7 +38,6 @@ axiosService.interceptors.response.use(
     return response;
   },
   async error => {
-    console.error('Response error:', error);
     if (error.response && error.response.status === 503) {
       // Navigate to maintenance screen
       // Call your navigation function to navigate to maintenance screen

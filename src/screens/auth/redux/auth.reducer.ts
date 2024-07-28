@@ -2,13 +2,20 @@ import {createReducer} from 'reduxsauce';
 
 import {authTypes} from './auth.action';
 import initialState from '../../../redux/store/initialState';
+import {
+  IAuthStates,
+  UserWithToken,
+} from '../../../redux/store/initialState/types';
 
 export const INITIAL_STATE = initialState.auth;
 
-const handleSignInSuccess = (state: IAuthStates, {info}: any) => {
+const handleSignInSuccess = (
+  state: IAuthStates,
+  {info}: {info: UserWithToken},
+) => {
   return {
     ...state,
-    user: info?.data,
+    user: info,
   };
 };
 

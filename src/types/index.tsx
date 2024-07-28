@@ -1,15 +1,9 @@
-interface IInitialState {
-  auth: IAuthStates;
-}
-
-interface IAuthStates {
-  user: any | null;
-}
-
-// types.ts
 export interface User {
+  createdAt: string;
+  updatedAt: string;
   id: number;
   username: string;
+  email: string;
 }
 
 export interface Todo {

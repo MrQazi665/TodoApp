@@ -1,25 +1,11 @@
-import axios from 'axios';
-import Config from 'react-native-config';
-import axiosService from '../../../utilities/helpers/axios-service';
+import axiosService from '../../../utilities/http-client';
 
-axios.defaults.baseURL = Config.base_url;
-
-export const callSignUp = async (data: any) => {
-  try {
-    const res = await axiosService.post(`user/register`, data);
-    console.log('xx- res', res);
-    return res.data;
-  } catch (error: any) {
-    console.log('xx- error', error);
-    throw error;
-  }
+export const postRegisterRequest = async (data: any) => {
+  const res = await axiosService.post(`users/register`, data);
+  return res.data;
 };
 
-export const callSignIn = async (data: any) => {
-  try {
-    const res = await axiosService.post(`user/login`, data);
-    return res.data;
-  } catch (error: any) {
-    throw error;
-  }
+export const postSignInRequest = async (data: any) => {
+  const res = await axiosService.post(`users/login`, data);
+  return res.data;
 };

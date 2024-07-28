@@ -13,11 +13,17 @@ import EyeOffSvg from '../../../assets/icons/svg/eyeOff.svg';
 
 import TodoFormTheme from '../../../components/theme/todo-form-theme';
 import {loginValidationSchema} from '../../../utilities/yup';
+import {useDispatch} from 'react-redux';
+import {authCreators} from '../redux/auth.action';
 
 const Login = () => {
   const navigation: any = useNavigation();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
 
+  const onSubmit = (values: any) => {
+    dispatch(authCreators.handleSignIn(values));
+  };
   return (
     <TodoFormTheme formTitle="Sign in to your account">
       <Formik
@@ -26,7 +32,7 @@ const Login = () => {
           password: '',
         }}
         validationSchema={loginValidationSchema}
-        onSubmit={values => console.log('xx- va', values)}>
+        onSubmit={onSubmit}>
         {({handleSubmit}) => (
           <View>
             <FormikFieldWrapper name="username" label="Username" mt={0.1} />
