@@ -6,7 +6,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import TodoFormTheme from '../../../components/theme/todo-form-theme';
 import FormikFieldWrapper from '../../../components/molecules/formik-field-wrapper';
@@ -16,6 +16,9 @@ import {authCreators} from '../redux/auth.action';
 import {signupValidationSchema} from '../../../utilities/yup';
 import {ISignupValues} from '../interface';
 import useCustomToast from '../../../hooks/useCustomToast';
+import {IInitialState} from '../../../redux/store/initialState/types';
+import {ActivityIndicator} from 'react-native';
+import {themeColors} from '../../../config/theme';
 
 const SignUpScreen = () => {
   const navigation: any = useNavigation();
@@ -23,6 +26,9 @@ const SignUpScreen = () => {
 
   const dispatch = useDispatch();
   const showToast = useCustomToast();
+  const isAuthenticating = useSelector(
+    (state: IInitialState) => state.loading.isAuthenticating,
+  );
 
   const onSubmit = (values: ISignupValues) => {
     dispatch(authCreators.handleSignUp({values, showToast}));
@@ -60,8 +66,13 @@ const SignUpScreen = () => {
               mt="4"
               size={'lg'}
               colorScheme="blue"
+              disabled={isAuthenticating}
               onPress={() => handleSubmit()}>
-              Sign up
+              {isAuthenticating ? (
+                <ActivityIndicator size={'small'} color={themeColors.white} />
+              ) : (
+                'Sign up'
+              )}
             </Button>
           </View>
         )}

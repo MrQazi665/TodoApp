@@ -2,37 +2,31 @@ import {createReducer} from 'reduxsauce';
 
 import {authTypes} from './auth.action';
 import initialState from '../../../redux/store/initialState';
-import {
-  IAuthStates,
-  UserWithToken,
-} from '../../../redux/store/initialState/types';
-import {User} from '../../../types';
+import {IAuthStates} from '../../../redux/store/initialState/types';
+import {UserWithToken} from '../interface';
 
 export const INITIAL_STATE = initialState.auth;
 
 const handleSignInSuccess = (
   state: IAuthStates,
   {info}: {info: UserWithToken},
-) => {
-  return {
-    ...state,
-    user: info,
-  };
-};
+) => ({
+  ...state,
+  user: info,
+});
 
-const handleSignUpSuccess = (state: IAuthStates, {info}: {info: any}) => {
-  return {
-    ...state,
-    user: info,
-  };
-};
+const handleSignUpSuccess = (
+  state: IAuthStates,
+  {info}: {info: UserWithToken},
+) => ({
+  ...state,
+  user: info,
+});
 
-const handleSignOut = (state: IAuthStates, {info}: any) => {
-  return {
-    ...state,
-    user: null,
-  };
-};
+const handleSignOut = (state: IAuthStates) => ({
+  ...state,
+  user: null,
+});
 
 export const HANDLERS = {
   [authTypes.HANDLE_SIGN_IN_SUCCESS]: handleSignInSuccess,

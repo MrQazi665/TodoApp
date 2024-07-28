@@ -1,3 +1,5 @@
+import {User} from '../../types';
+
 export interface ILoginValues {
   username: string;
   password: string;
@@ -15,4 +17,8 @@ export interface ILoginAction {
 export interface ISignupAction {
   showToast: (type: string, message: string) => void;
   values: ISignupValues;
+}
+export interface UserWithToken {
+  user: User;
+  access_token: string;
 }
