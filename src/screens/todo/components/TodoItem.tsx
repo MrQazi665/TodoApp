@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import {Todo} from '../../../types';
 import {themeColors} from '../../../config/theme';
+import EditIcon from '../../../assets/icons/svg/edit.svg';
+import DeleteIcon from '../../../assets/icons/svg/delete.svg';
 
 interface TodoItemProps {
   todo: Todo;
@@ -33,35 +35,46 @@ const TodoItem: React.FC<TodoItemProps> = ({
     setIsEditing(false);
   };
   return (
-    <TouchableOpacity onPress={() => onToggle(todo.id)}>
-      <View style={[styles.item, todo.completed ? styles.completed : null]}>
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{todo.title}</Text>
-          <Text style={styles.description}>{todo.description}</Text>
-          <Text style={styles.meta}>
-            By {todo.user.username} on{' '}
-            {new Date(todo.createdAt).toLocaleDateString()}
-          </Text>
+    <View style={styles.container}>
+      <TouchableOpacity onPress={() => onToggle(todo.id)}>
+        <View style={[styles.item, todo.completed ? styles.completed : null]}>
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>{todo.title}</Text>
+            <Text style={styles.description}>{todo.description}</Text>
+            <Text style={styles.meta}>
+              By {todo.username} on{' '}
+              {new Date(todo.createdAt).toLocaleDateString()}
+            </Text>
+          </View>
+          <View style={styles.actionContainer}>
+            <View style={styles.actions}>
+              <TouchableOpacity
+                onPress={() => setIsEditing(true)}
+                style={styles.actionButton}>
+                <EditIcon width={20} height={20} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => onDelete(todo.id)}
+                style={styles.actionButton}>
+                <DeleteIcon width={20} height={20} />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              onPress={() => onToggle(todo.id)}
+              style={styles.completeButton}>
+              <Text style={styles.completeText}>
+                {todo.completed ? 'completed' : 'complete'}
+              </Text>
+              <View
+                style={[
+                  styles.status,
+                  todo.completed ? styles.statusCompleted : null,
+                ]}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.actions}>
-          <TouchableOpacity
-            onPress={() => setIsEditing(true)}
-            style={styles.actionButton}>
-            <Text style={styles.actionText}>Edit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => onDelete(todo.id)}
-            style={styles.actionButton}>
-            <Text style={styles.actionText}>Delete</Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={[
-            styles.status,
-            todo.completed ? styles.statusCompleted : null,
-          ]}
-        />
-      </View>
+      </TouchableOpacity>
 
       <Modal visible={isEditing} animationType="slide" transparent={true}>
         <View style={styles.modalContainer}>
@@ -92,16 +105,18 @@ const TodoItem: React.FC<TodoItemProps> = ({
           </View>
         </View>
       </Modal>
-    </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
   item: {
     backgroundColor: 'white',
     padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
     borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'center',
@@ -131,16 +146,25 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#999',
   },
+  actionContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
   actions: {
     flexDirection: 'row',
-    marginRight: 10,
+    marginBottom: 10,
   },
   actionButton: {
     marginHorizontal: 5,
   },
-  actionText: {
+  completeButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  completeText: {
     color: themeColors.themeBlue,
     fontWeight: 'bold',
+    marginRight: 5,
   },
   status: {
     width: 20,

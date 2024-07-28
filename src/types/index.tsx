@@ -4,6 +4,7 @@ export interface User {
   id: number;
   username: string;
   email: string;
+  token: string;
 }
 
 export interface Todo {
@@ -12,5 +13,5 @@ export interface Todo {
   title: string;
   description: string;
   completed: number;
-  user: User;
+  username: any;
 }

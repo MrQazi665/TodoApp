@@ -5,4 +5,11 @@ export default {
   loading: {
     isAuthenticating: false,
   },
+  todo: {
+    todos: {
+      data: null,
+      page: 1,
+      totalRecords: null,
+    },
+  },
 };

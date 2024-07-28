@@ -13,9 +13,8 @@ import {Todo} from '../../types';
 const initialTodos: Todo[] = [];
 
 const TodoScreen: React.FC = () => {
-  const dispatch = useDispatch();
   const [todos, setTodos] = useState<Todo[]>(initialTodos);
-
+  const dispatch = useDispatch();
   const addTodo = (newTodo: Todo) => {
     setTodos([newTodo, ...todos]);
   };

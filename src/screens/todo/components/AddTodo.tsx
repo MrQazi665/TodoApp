@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import {Todo} from '../../../types';
 import {themeColors} from '../../../config/theme';
+import {useSelector} from 'react-redux';
+import {IInitialState} from '../../../redux/store/initialState/types';
 
 interface AddTodoProps {
   onAdd: (todo: Todo) => void;
@@ -17,6 +19,7 @@ interface AddTodoProps {
 const AddTodo: React.FC<AddTodoProps> = ({onAdd}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const {user} = useSelector((state: IInitialState) => state.auth);
 
   const handleAdd = () => {
     if (title.trim() && description.trim()) {
@@ -26,7 +29,7 @@ const AddTodo: React.FC<AddTodoProps> = ({onAdd}) => {
         description,
         completed: 0,
         createdAt: new Date().toISOString(),
-        user: {id: 1, username: 'CurrentUser'}, // Replace with actual user data
+        username: user?.data?.username, // Replace with actual user data
       };
       onAdd(newTodo);
       setTitle('');
