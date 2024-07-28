@@ -6,8 +6,8 @@ import AuthStack from './stacks/auth-stack';
 export default function Navigation() {
   return (
     <NavigationContainer>
-      <AuthStack />
-      {/* <ProtectedStack /> */}
+      {/* <AuthStack /> */}
+      <ProtectedStack />
     </NavigationContainer>
   );
 }
