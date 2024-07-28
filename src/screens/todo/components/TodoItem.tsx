@@ -32,7 +32,6 @@ const TodoItem: React.FC<TodoItemProps> = ({
     onUpdate({...todo, title: editedTitle, description: editedDescription});
     setIsEditing(false);
   };
-  console.log('xx- todo', todo);
   return (
     <TouchableOpacity onPress={() => onToggle(todo.id)}>
       <View style={[styles.item, todo.completed ? styles.completed : null]}>

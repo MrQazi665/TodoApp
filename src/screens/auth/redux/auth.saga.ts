@@ -1,45 +1,43 @@
 import {call, put, takeEvery} from 'redux-saga/effects';
-import {authCreators, authTypes} from './auth.action';
-import {postSignInRequest, postRegisterRequest} from './auth.api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import {Alert} from 'react-native';
+
+import {postSignInRequest, postRegisterRequest} from './auth.api';
+import {authCreators, authTypes} from './auth.action';
 import {setItemInStorage} from '../../../utilities/storage-service';
 import {StorageKeys} from '../../../enums';
+import {ILoginAction, ISignupAction, ISignupValues} from '../interface';
 
 export function* watchAuth() {
   yield takeEvery(authTypes.HANDLE_SIGN_IN, handleSignIn);
   yield takeEvery(authTypes.HANDLE_SIGN_UP, handleSignUp);
 }
 
-function* handleSignIn({params}: any): any {
+function* handleSignIn({params}: {params: ILoginAction; type: string}): any {
   try {
-    const response = yield call(postSignInRequest, params);
+    const {values, showToast} = params;
+    const response = yield call(postSignInRequest, values);
 
     setItemInStorage(StorageKeys.User, response.data.access_token);
-    yield put(authCreators.handleSignInSuccess(response));
-  } catch (error) {
+    showToast('success', 'Login Successfully');
+
+    yield put(authCreators.handleSignInSuccess(response.data));
+  } catch (error: any) {
+    params.showToast('error', error.response.data.message);
     yield put(authCreators.handleSignInFailure(error));
   }
 }
 
-function* handleSignUp(action: any): any {
+function* handleSignUp({params}: {params: ISignupAction; type: string}): any {
   try {
-    const response = yield call(postRegisterRequest, action?.params?.data);
-    if (!response?.success) {
-      Alert.alert('Error', response?.message);
-      yield put(authCreators.handleSignUpFailure(response));
-    } else {
-      yield put(
-        authCreators.handleSignUpSuccess({
-          data: response?.data,
-          access_token: action?.params?.access_token,
-          role: action?.params?.role,
-          password: action?.params?.password,
-        }),
-      );
-    }
-  } catch (error) {
+    const {values, showToast} = params;
+
+    const response = yield call(postRegisterRequest, values);
+    setItemInStorage(StorageKeys.User, response.data.access_token);
+    showToast('success', 'Register Successfully');
+
+    yield put(authCreators.handleSignUpSuccess(response?.data));
+  } catch (error: any) {
+    params.showToast('error', error.response.data.message);
     yield put(authCreators.handleSignUpFailure(error));
   }
 }

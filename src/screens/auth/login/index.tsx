@@ -15,14 +15,17 @@ import TodoFormTheme from '../../../components/theme/todo-form-theme';
 import {loginValidationSchema} from '../../../utilities/yup';
 import {useDispatch} from 'react-redux';
 import {authCreators} from '../redux/auth.action';
+import {ILoginValues} from '../interface';
+import useCustomToast from '../../../hooks/useCustomToast';
 
 const Login = () => {
   const navigation: any = useNavigation();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const showToast = useCustomToast();
 
-  const onSubmit = (values: any) => {
-    dispatch(authCreators.handleSignIn(values));
+  const onSubmit = (values: ILoginValues) => {
+    dispatch(authCreators.handleSignIn({values, showToast}));
   };
   return (
     <TodoFormTheme formTitle="Sign in to your account">

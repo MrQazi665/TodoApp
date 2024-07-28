@@ -6,6 +6,7 @@ import {
   IAuthStates,
   UserWithToken,
 } from '../../../redux/store/initialState/types';
+import {User} from '../../../types';
 
 export const INITIAL_STATE = initialState.auth;
 
@@ -19,7 +20,7 @@ const handleSignInSuccess = (
   };
 };
 
-const handleSignUpSuccess = (state: IAuthStates, {info}: any) => {
+const handleSignUpSuccess = (state: IAuthStates, {info}: {info: any}) => {
   return {
     ...state,
     user: info,

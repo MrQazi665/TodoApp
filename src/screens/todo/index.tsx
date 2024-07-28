@@ -1,16 +1,19 @@
-// App.tsx
 import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
-import {Todo} from '../../types';
+import {useDispatch} from 'react-redux';
+
 import AddTodo from './components/AddTodo';
 import TodoList from './components/TodoList';
 import Header from './components/Header';
+import {StorageKeys} from '../../enums';
+import {authCreators} from '../auth/redux/auth.action';
+import {removeItemFromStorage} from '../../utilities/storage-service';
+import {Todo} from '../../types';
 
-const initialTodos: Todo[] = [
-  // Your provided data here
-];
+const initialTodos: Todo[] = [];
 
 const TodoScreen: React.FC = () => {
+  const dispatch = useDispatch();
   const [todos, setTodos] = useState<Todo[]>(initialTodos);
 
   const addTodo = (newTodo: Todo) => {
@@ -33,9 +36,10 @@ const TodoScreen: React.FC = () => {
   const deleteTodo = (id: number) => {
     setTodos(todos.filter(todo => todo.id !== id));
   };
+
   const handleLogout = () => {
-    // Implement your logout logic here
-    console.log('Logout pressed');
+    removeItemFromStorage(StorageKeys.User);
+    dispatch(authCreators.handleSignOut());
   };
 
   return (
