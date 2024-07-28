@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
+import {FlatList} from 'native-base';
 
-import AddTodo from './components/AddTodo';
-import TodoList from './components/TodoList';
-import Header from './components/Header';
-import {StorageKeys} from '../../enums';
 import {authCreators} from '../auth/redux/auth.action';
+import Header from '../../components/molecules/header';
+import AddTodo from './components/add-todo';
+import TodoItem from './components/todo-item';
 import {removeItemFromStorage} from '../../utilities/storage-service';
+import {StorageKeys} from '../../enums';
 import {Todo} from '../../types';
 
 const initialTodos: Todo[] = [];
@@ -46,11 +47,18 @@ const TodoScreen: React.FC = () => {
       <Header onLogout={handleLogout} />
       <View style={styles.content}>
         <AddTodo onAdd={addTodo} />
-        <TodoList
-          todos={todos}
-          onToggle={toggleTodo}
-          onUpdate={updateTodo}
-          onDelete={deleteTodo}
+        <FlatList
+          mt={2}
+          data={todos}
+          renderItem={({item}) => (
+            <TodoItem
+              todo={item}
+              onToggle={toggleTodo}
+              onUpdate={updateTodo}
+              onDelete={deleteTodo}
+            />
+          )}
+          keyExtractor={item => item.id.toString()}
         />
       </View>
     </SafeAreaView>

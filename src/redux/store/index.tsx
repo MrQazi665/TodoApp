@@ -5,6 +5,7 @@ import {persistReducer, persistStore} from 'redux-persist';
 import {persistConfig} from '../persist';
 import rootReducer from '../reducers';
 import {rootSaga} from '../sagas';
+import {IInitialState} from './initialState/types';
 
 export default function configureStore(initialState: IInitialState | any) {
   const middlewares = [];

@@ -110,21 +110,6 @@ const customTheme = extendTheme({
             },
           };
         },
-        light: (props: any) => {
-          return {
-            bg: themeColors.primaryBase,
-            borderColor: themeColors.primaryBase,
-            _text: {
-              color: themeColors.themeBlue,
-            },
-            _pressed: {
-              bg: themeColors.primaryBase,
-              _text: {
-                color: themeColors.white,
-              },
-            },
-          };
-        },
       },
       defaultProps: {
         size: 'sm',

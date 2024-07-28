@@ -23,3 +23,7 @@ export const signupValidationSchema = Yup.object().shape({
     .email('Enter a valid email address')
     .required('Email is required'),
 });
+
+export const todoValidations = Yup.object().shape({
+  title: Yup.string().required('Title is required'),
+});
