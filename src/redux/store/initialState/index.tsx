@@ -1,3 +1,5 @@
 export default {
-  loading: {},
+  auth: {
+    user: null,
+  },
 };

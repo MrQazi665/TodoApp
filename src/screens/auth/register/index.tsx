@@ -11,11 +11,23 @@ import TodoFormTheme from '../../../components/theme/todo-form-theme';
 import FormikFieldWrapper from '../../../components/molecules/formik-field-wrapper';
 import EyeSvg from '../../../assets/icons/svg/eye.svg';
 import EyeOffSvg from '../../../assets/icons/svg/eyeOff.svg';
+import {useDispatch} from 'react-redux';
+import {authCreators} from '../redux/auth.action';
 import {signupValidationSchema} from '../../../utilities/yup';
 
 const SignUpScreen = () => {
   const navigation: any = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
+  const onSubmit = (user: any) => {
+    console.log('xx- user', user);
+    const data = {
+      username: user?.username,
+      email: user?.email,
+      password: user?.password,
+    };
+    dispatch(authCreators.handleSignUp(data));
+  };
 
   return (
     <TodoFormTheme formTitle="Create an account">
@@ -26,7 +38,7 @@ const SignUpScreen = () => {
           email: '',
         }}
         validationSchema={signupValidationSchema}
-        onSubmit={values => console.log('xx- va', values)}>
+        onSubmit={values => onSubmit(values)}>
         {({handleSubmit}) => (
           <View>
             <FormikFieldWrapper name="username" label="Username" mt={0.1} />
