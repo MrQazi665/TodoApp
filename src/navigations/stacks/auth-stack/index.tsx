@@ -1,5 +1,5 @@
-import Login from '../../../screens/auth-screens/login';
-import Register from '../../../screens/auth-screens/register';
+import Login from '../../../screens/auth/login';
+import Register from '../../../screens/auth/register';
 import {Stack} from '../../../utilities/navigation';
 
 const AuthStack = () => {
