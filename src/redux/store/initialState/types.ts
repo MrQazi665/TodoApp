@@ -20,7 +20,7 @@ export interface ILoadingStates {
   isAuthenticating: boolean;
 }
 export interface ITodoStates {
-  todos: {
+  todoData: {
     data: any;
     page: number;
     totalRecords: any;

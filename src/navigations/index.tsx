@@ -8,6 +8,7 @@ import {IInitialState} from '../redux/store/initialState/types';
 
 export default function Navigation() {
   const {user} = useSelector((state: IInitialState) => state.auth);
+
   return (
     <NavigationContainer>
       {user?.access_token ? <ProtectedStack /> : <AuthStack />}

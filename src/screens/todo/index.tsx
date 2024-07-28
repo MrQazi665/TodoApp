@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {FlatList} from 'native-base';
 
 import {authCreators} from '../auth/redux/auth.action';
@@ -10,36 +10,61 @@ import TodoItem from './components/todo-item';
 import {removeItemFromStorage} from '../../utilities/storage-service';
 import {StorageKeys} from '../../enums';
 import {Todo} from '../../types';
+import {todoCreators} from './redux/todo.action';
+import {IInitialState} from '../../redux/store/initialState/types';
+import {TodoFormValues} from './interface';
 
 const initialTodos: Todo[] = [];
 
 const TodoScreen: React.FC = () => {
+  const {todoData} = useSelector((state: IInitialState) => state.todo);
   const [todos, setTodos] = useState<Todo[]>(initialTodos);
   const dispatch = useDispatch();
-  const addTodo = (newTodo: Todo) => {
-    setTodos([newTodo, ...todos]);
+
+  useEffect(() => {
+    dispatch(todoCreators.getAllTodo({page: 1, limit: 10}));
+  }, []);
+
+  const addTodo = (newTodo: TodoFormValues) => {
+    dispatch(todoCreators.newTodoCreate(newTodo));
   };
 
-  const toggleTodo = (id: number) => {
-    setTodos(
-      todos.map(todo =>
-        todo.id === id ? {...todo, completed: todo.completed ? 0 : 1} : todo,
-      ),
-    );
+  const toggleTodo = (updatedTodo: Todo) => {
+    console.log('xx- updatedTodo', updatedTodo);
+    const data = {
+      title: updatedTodo.title,
+      description: updatedTodo.description,
+      completed: updatedTodo.completed === 0 ? 1 : 0,
+    };
+
+    dispatch(todoCreators.todoUpdate({id: updatedTodo.id, data: data}));
   };
   const updateTodo = (updatedTodo: Todo) => {
-    setTodos(
-      todos.map(todo => (todo.id === updatedTodo.id ? updatedTodo : todo)),
-    );
+    const data = {
+      title: updatedTodo.title,
+      description: updatedTodo.description,
+    };
+
+    dispatch(todoCreators.todoUpdate({id: updatedTodo.id, data: data}));
   };
 
   const deleteTodo = (id: number) => {
-    setTodos(todos.filter(todo => todo.id !== id));
+    dispatch(todoCreators.todoDelete({id: id}));
   };
 
   const handleLogout = () => {
     removeItemFromStorage(StorageKeys.User);
     dispatch(authCreators.handleSignOut());
+  };
+  const onEndReached = () => {
+    if (todoData.data.length < todoData.totalRecords) {
+      dispatch(
+        todoCreators.getAllTodo({
+          page: todoData.page + 1,
+          append: true,
+        }),
+      );
+    }
   };
 
   return (
@@ -49,7 +74,7 @@ const TodoScreen: React.FC = () => {
         <AddTodo onAdd={addTodo} />
         <FlatList
           mt={2}
-          data={todos}
+          data={todoData.data}
           renderItem={({item}) => (
             <TodoItem
               todo={item}
@@ -58,7 +83,9 @@ const TodoScreen: React.FC = () => {
               onDelete={deleteTodo}
             />
           )}
-          keyExtractor={item => item.id.toString()}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.6}
+          keyExtractor={item => item?.id?.toString()}
         />
       </View>
     </SafeAreaView>

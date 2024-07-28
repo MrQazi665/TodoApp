@@ -6,9 +6,10 @@ import FormikFieldWrapper from '../../../../components/molecules/formik-field-wr
 import {todoValidations} from '../../../../utilities/yup';
 import {styles} from './styles';
 import {Todo} from '../../../../types';
+import {TodoFormValues} from '../../interface';
 
 interface AddTodoProps {
-  onAdd: (todo: Todo) => void;
+  onAdd: (todo: TodoFormValues) => void;
 }
 
 const AddTodo: React.FC<AddTodoProps> = ({onAdd}) => {
@@ -21,12 +22,7 @@ const AddTodo: React.FC<AddTodoProps> = ({onAdd}) => {
         }}
         validationSchema={todoValidations}
         onSubmit={(values, {resetForm}) => {
-          onAdd({
-            id: Date.now(),
-            completed: 0,
-            createdAt: new Date().toISOString(),
-            ...values,
-          });
+          onAdd(values);
           resetForm();
         }}>
         {({handleSubmit}) => (

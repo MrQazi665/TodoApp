@@ -6,7 +6,7 @@ export default {
     isAuthenticating: false,
   },
   todo: {
-    todos: {
+    todoData: {
       data: null,
       page: 1,
       totalRecords: null,

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Platform} from 'react-native';
+import {StorageKeys} from '../enums';
 
 const baseURL =
   Platform.OS === 'ios' ? 'http://127.0.0.1:4000/' : 'http://10.0.2.2:4000/';
@@ -15,7 +16,7 @@ const axiosService = axios.create({
 axiosService.interceptors.request.use(
   async config => {
     try {
-      const userAuthToken = await AsyncStorage.getItem('@USER');
+      const userAuthToken = await AsyncStorage.getItem(StorageKeys.User);
       if (config?.headers?.Authorization) {
         config.headers['Authorization'] = config?.headers?.Authorization;
       } else if (userAuthToken) {

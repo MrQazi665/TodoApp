@@ -14,7 +14,7 @@ import {styles} from './styles';
 
 interface TodoItemProps {
   todo: Todo | any;
-  onToggle: (id: number) => void;
+  onToggle: (todo: Todo) => void;
   onUpdate: (todo: Todo) => void;
   onDelete: (id: number) => void;
 }
@@ -29,7 +29,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => onToggle(todo.id)}>
+      <Pressable onPress={() => onToggle(todo)}>
         <View style={[styles.item, todo.completed ? styles.completed : null]}>
           <View style={styles.textContainer}>
             <View
@@ -62,12 +62,12 @@ const TodoItem: React.FC<TodoItemProps> = ({
                 fontSize={13}
                 color={themeColors.themeBlue}
                 fontWeight={'extrabold'}>
-                By {todo.username} on{' '}
+                By {todo.user.username} on{' '}
                 {new Date(todo.createdAt).toLocaleDateString()}
               </Text>
               <Checkbox
                 isChecked={todo.completed}
-                onChange={() => onToggle(todo.id)}
+                onChange={() => onToggle(todo)}
                 value={'completed'}>
                 Completed
               </Checkbox>

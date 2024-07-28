@@ -6,14 +6,17 @@ import configureStore from './redux/store';
 import initialState from './redux/store/initialState';
 import Navigation from './navigations';
 import customTheme from './config/theme';
+import {PersistGate} from 'redux-persist/integration/react';
 
 export default function App() {
-  const {store} = configureStore(initialState);
+  const {store, persistor} = configureStore(initialState);
   return (
     <Provider store={store}>
-      <NativeBaseProvider theme={customTheme}>
-        <Navigation />
-      </NativeBaseProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <NativeBaseProvider theme={customTheme}>
+          <Navigation />
+        </NativeBaseProvider>
+      </PersistGate>
     </Provider>
   );
 }
