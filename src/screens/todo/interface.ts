@@ -29,7 +29,7 @@ export interface UpdateTodoActionParam {
 }
 
 export interface DeleteTodoActionParam {
-  params: number;
+  params: {id: number; showToast: (type: string, message: string) => void};
   type: string;
 }
 

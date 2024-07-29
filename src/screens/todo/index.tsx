@@ -56,7 +56,7 @@ const TodoScreen: React.FC = () => {
   };
 
   const deleteTodo = (id: number) => {
-    dispatch(todoCreators.deleteTodo(id));
+    dispatch(todoCreators.deleteTodo({id, showToast}));
   };
 
   const handleLogout = () => {

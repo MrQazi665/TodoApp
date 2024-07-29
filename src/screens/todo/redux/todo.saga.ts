@@ -74,11 +74,14 @@ function* updateTodo({
 function* deleteTodo({
   params,
 }: DeleteTodoActionParam): Generator<any, void, any> {
+  const {id, showToast} = params;
   try {
-    yield call(deleteTodoRequest, params);
+    yield call(deleteTodoRequest, id);
+    showToast('success', 'Delete todo successfully');
 
     yield put(todoCreators.deleteTodoSuccess(params));
-  } catch (error) {
+  } catch (error: any) {
+    showToast('error', error.response.data.message);
     yield put(todoCreators.deleteTodoFailure(error));
   }
 }
