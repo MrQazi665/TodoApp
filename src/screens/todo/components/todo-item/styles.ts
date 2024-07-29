@@ -7,7 +7,6 @@ import {
 export const styles = StyleSheet.create({
   container: {
     marginVertical: hp(1.5),
-    marginHorizontal: wp(0.5),
   },
   item: {
     backgroundColor: 'white',
@@ -31,6 +30,7 @@ export const styles = StyleSheet.create({
     fontSize: hp(2.2),
     fontWeight: 'bold',
     marginBottom: hp(1),
+    width: '74%',
   },
   description: {
     fontSize: hp(1.8),

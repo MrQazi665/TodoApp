@@ -3,60 +3,69 @@ import {createReducer} from 'reduxsauce';
 import initialState from '../../../redux/store/initialState';
 import {ITodoStates} from '../../../redux/store/initialState/types';
 import {todoTypes} from './todo.action';
+import {Todo} from '../../../types';
 
 export const INITIAL_STATE = initialState.todo;
 
-const getAllTodoSuccess = (state: ITodoStates, {info}: {info: any}) => {
-  console.log('xx-info', info.pagination);
+const getAllTodosSuccess = (state: ITodoStates, {info}: {info: any}) => {
+  const response = info.response;
   return {
     ...state,
     todoData: {
-      data: info.data,
-      page: info.pagination.page,
-      totalRecords: info.pagination.totalRecords,
+      data: info?.append
+        ? [...(state.todoData.data || []), ...(response.data || [])]
+        : response.data,
+      page: response.pagination.page,
+      totalRecords: response.pagination.totalRecords,
     },
   };
 };
 
-const newTodoCreateSuccess = (state: ITodoStates, {info}: {info: any}) => {
-  console.log('xx info', info);
+const addTodoSuccess = (state: ITodoStates, {info}: {info: any}) => {
   return {
     ...state,
     todoData: {
-      data: [...info, ...state.todoData.data],
-      page: info.pagination.page,
-      totalRecords: info.pagination.totalRecords,
-    },
-  };
-};
-const todoUpdateSuccess = (state: ITodoStates, {info}: {info: any}) => {
-  console.log('xx-info.data', info);
-  return {
-    ...state,
-    todoData: {
-      data: [...info, ...state.todoData.data],
-      page: info.pagination.page,
-      totalRecords: info.pagination.totalRecords,
+      ...state.todoData,
+      data: [info, ...state.todoData.data],
     },
   };
 };
 
-const todoDeleteSuccess = (state: ITodoStates, {info}: {info: any}) => {
-  console.log('xx-info.data', info);
+const updateTodoSuccess = (state: ITodoStates, {info}: {info: Todo}) => {
   return {
     ...state,
     todoData: {
-      data: [...info, ...state.todoData.data],
-      page: info.pagination.page,
-      totalRecords: info.pagination.totalRecords,
+      ...state.todoData,
+      data: state.todoData.data.map((item: Todo) =>
+        item.id === info.id ? {...item, ...info} : item,
+      ),
     },
+  };
+};
+
+const deleteTodoSuccess = (state: ITodoStates, {info}: {info: number}) => {
+  return {
+    ...state,
+    todoData: {
+      ...state.todoData,
+      data: state.todoData.data.filter((item: Todo) => item.id != info),
+    },
+  };
+};
+
+const handleUpdateDeleteTodoStart = (state: ITodoStates, {params}: any) => {
+  return {
+    ...state,
+    itemId: params?.id || params,
   };
 };
 
 export const HANDLERS: any = {
-  [todoTypes.GET_ALL_TODO_SUCCESS]: getAllTodoSuccess,
-  [todoTypes.NEW_TODO_CREATE_SUCCESS]: newTodoCreateSuccess,
-  [todoTypes.TODO_UPDATE_SUCCESS]: todoUpdateSuccess,
-  [todoTypes.TODO_DELETE_SUCCESS]: todoDeleteSuccess,
+  [todoTypes.GET_ALL_TODOS_SUCCESS]: getAllTodosSuccess,
+  [todoTypes.ADD_TODO_SUCCESS]: addTodoSuccess,
+  [todoTypes.UPDATE_TODO_SUCCESS]: updateTodoSuccess,
+  [todoTypes.DELETE_TODO_SUCCESS]: deleteTodoSuccess,
+  [todoTypes.UPDATE_TODO]: handleUpdateDeleteTodoStart,
+  [todoTypes.DELETE_TODO]: handleUpdateDeleteTodoStart,
 };
 export default createReducer(INITIAL_STATE, HANDLERS);

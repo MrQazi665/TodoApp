@@ -1,21 +1,21 @@
 import {createActions} from 'reduxsauce';
 
 const {Types, Creators} = createActions({
-  getAllTodo: ['params'],
-  getAllTodoSuccess: ['info'],
-  getAllTodoFailure: ['error'],
+  getAllTodos: ['params'],
+  getAllTodosSuccess: ['info'],
+  getAllTodosFailure: ['error'],
 
-  newTodoCreate: ['params'],
-  newTodoCreateSuccess: ['info'],
-  newTodoCreateFailure: ['error'],
+  addTodo: ['params'],
+  addTodoSuccess: ['info'],
+  addTodoFailure: ['error'],
 
-  todoUpdate: ['params'],
-  todoUpdateSuccess: ['info'],
-  todoUpdateFailure: ['error'],
+  updateTodo: ['params'],
+  updateTodoSuccess: ['info'],
+  updateTodoFailure: ['error'],
 
-  todoDelete: ['params'],
-  todoDeleteSuccess: ['info'],
-  todoDeleteFailure: ['error'],
+  deleteTodo: ['params'],
+  deleteTodoSuccess: ['info'],
+  deleteTodoFailure: ['error'],
 });
 
 export const todoTypes = Types;

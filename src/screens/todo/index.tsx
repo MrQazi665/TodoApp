@@ -1,65 +1,75 @@
-import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {Keyboard, SafeAreaView, StyleSheet, FlatList} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {FlatList} from 'native-base';
+import {View} from 'native-base';
 
-import {authCreators} from '../auth/redux/auth.action';
 import Header from '../../components/molecules/header';
 import AddTodo from './components/add-todo';
 import TodoItem from './components/todo-item';
-import {removeItemFromStorage} from '../../utilities/storage-service';
-import {StorageKeys} from '../../enums';
-import {Todo} from '../../types';
+import Loader from '../../components/loader';
+import {authCreators} from '../auth/redux/auth.action';
 import {todoCreators} from './redux/todo.action';
 import {IInitialState} from '../../redux/store/initialState/types';
+import {removeItemFromStorage} from '../../utilities/storage-service';
+import {themeColors} from '../../config/theme';
+import {StorageKeys} from '../../enums';
 import {TodoFormValues} from './interface';
-
-const initialTodos: Todo[] = [];
+import {Todo} from '../../types';
+import useCustomToast from '../../hooks/useCustomToast';
+import {styles} from './styles';
 
 const TodoScreen: React.FC = () => {
-  const {todoData} = useSelector((state: IInitialState) => state.todo);
-  const [todos, setTodos] = useState<Todo[]>(initialTodos);
+  const todoData = useSelector((state: IInitialState) => state.todo.todoData);
+  const isFetchingTodos = useSelector(
+    (state: IInitialState) => state.loading.isFetchingTodos,
+  );
+  const showToast = useCustomToast();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(todoCreators.getAllTodo({page: 1, limit: 10}));
+    dispatch(todoCreators.getAllTodos({page: 1, limit: 5}));
   }, []);
 
-  const addTodo = (newTodo: TodoFormValues) => {
-    dispatch(todoCreators.newTodoCreate(newTodo));
+  const addTodo = (todoPayload: TodoFormValues, resetForm: () => void) => {
+    dispatch(todoCreators.addTodo({todoPayload, resetForm, showToast}));
+    Keyboard.dismiss();
   };
 
   const toggleTodo = (updatedTodo: Todo) => {
-    console.log('xx- updatedTodo', updatedTodo);
     const data = {
-      title: updatedTodo.title,
-      description: updatedTodo.description,
+      ...updatedTodo,
       completed: updatedTodo.completed === 0 ? 1 : 0,
     };
 
-    dispatch(todoCreators.todoUpdate({id: updatedTodo.id, data: data}));
+    dispatch(todoCreators.updateTodo({id: updatedTodo.id, data: data}));
   };
+
   const updateTodo = (updatedTodo: Todo) => {
     const data = {
       title: updatedTodo.title,
       description: updatedTodo.description,
     };
 
-    dispatch(todoCreators.todoUpdate({id: updatedTodo.id, data: data}));
+    dispatch(todoCreators.updateTodo({id: updatedTodo.id, data: data}));
   };
 
   const deleteTodo = (id: number) => {
-    dispatch(todoCreators.todoDelete({id: id}));
+    dispatch(todoCreators.deleteTodo(id));
   };
 
   const handleLogout = () => {
     removeItemFromStorage(StorageKeys.User);
     dispatch(authCreators.handleSignOut());
   };
+
   const onEndReached = () => {
-    if (todoData.data.length < todoData.totalRecords) {
+    if (
+      todoData.data?.length &&
+      todoData.data.length < todoData.totalRecords &&
+      !isFetchingTodos
+    ) {
       dispatch(
-        todoCreators.getAllTodo({
+        todoCreators.getAllTodos({
           page: todoData.page + 1,
           append: true,
         }),
@@ -73,7 +83,6 @@ const TodoScreen: React.FC = () => {
       <View style={styles.content}>
         <AddTodo onAdd={addTodo} />
         <FlatList
-          mt={2}
           data={todoData.data}
           renderItem={({item}) => (
             <TodoItem
@@ -83,24 +92,30 @@ const TodoScreen: React.FC = () => {
               onDelete={deleteTodo}
             />
           )}
+          ListEmptyComponent={
+            isFetchingTodos ? (
+              <View mt={5}>
+                <Loader color={themeColors.themeBlue} />
+              </View>
+            ) : (
+              <View />
+            )
+          }
+          showsVerticalScrollIndicator={false}
           onEndReached={onEndReached}
-          onEndReachedThreshold={0.6}
+          onEndReachedThreshold={0.1}
           keyExtractor={item => item?.id?.toString()}
+          ListFooterComponent={
+            isFetchingTodos && todoData.data?.length ? (
+              <Loader color={themeColors.themeBlue} />
+            ) : (
+              <View />
+            )
+          }
         />
       </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-  },
-});
 
 export default TodoScreen;

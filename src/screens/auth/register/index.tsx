@@ -17,8 +17,7 @@ import {signupValidationSchema} from '../../../utilities/yup';
 import {ISignupValues} from '../interface';
 import useCustomToast from '../../../hooks/useCustomToast';
 import {IInitialState} from '../../../redux/store/initialState/types';
-import {ActivityIndicator} from 'react-native';
-import {themeColors} from '../../../config/theme';
+import Loader from '../../../components/loader';
 
 const SignUpScreen = () => {
   const navigation: any = useNavigation();
@@ -68,11 +67,7 @@ const SignUpScreen = () => {
               colorScheme="blue"
               disabled={isAuthenticating}
               onPress={() => handleSubmit()}>
-              {isAuthenticating ? (
-                <ActivityIndicator size={'small'} color={themeColors.white} />
-              ) : (
-                'Sign up'
-              )}
+              {isAuthenticating ? <Loader /> : 'Sign up'}
             </Button>
           </View>
         )}

@@ -1,18 +1,22 @@
 import {call, put, takeEvery} from 'redux-saga/effects';
-import {Alert} from 'react-native';
 
 import {postSignInRequest, postRegisterRequest} from './auth.api';
 import {authCreators, authTypes} from './auth.action';
 import {setItemInStorage} from '../../../utilities/storage-service';
 import {StorageKeys} from '../../../enums';
-import {ILoginAction, ISignupAction, ISignupValues} from '../interface';
+import {ILoginAction, ISignupAction} from '../interface';
 
 export function* watchAuth() {
   yield takeEvery(authTypes.HANDLE_SIGN_IN, handleSignIn);
   yield takeEvery(authTypes.HANDLE_SIGN_UP, handleSignUp);
 }
 
-function* handleSignIn({params}: {params: ILoginAction; type: string}): any {
+function* handleSignIn({
+  params,
+}: {
+  params: ILoginAction;
+  type: string;
+}): Generator<any, void, any> {
   try {
     const {values, showToast} = params;
     const response = yield call(postSignInRequest, values);
@@ -27,7 +31,12 @@ function* handleSignIn({params}: {params: ILoginAction; type: string}): any {
   }
 }
 
-function* handleSignUp({params}: {params: ISignupAction; type: string}): any {
+function* handleSignUp({
+  params,
+}: {
+  params: ISignupAction;
+  type: string;
+}): Generator<any, void, any> {
   try {
     const {values, showToast} = params;
 

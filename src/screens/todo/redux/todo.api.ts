@@ -1,28 +1,28 @@
+import {Todo} from '../../../types';
 import axiosService from '../../../utilities/http-client';
+import {PaginationInput} from '../interface';
 
-export const getAllTodos = async (data: any) => {
-  const res = await axiosService.get(
-    `todo/listing?page=${data?.page}&limit=${data?.limit}`,
+export const getTodoListing = async (data: PaginationInput) => {
+  const response = await axiosService.get(
+    `todo/listing?page=${data?.page}&limit=${data?.limit || 5}`,
   );
-
-  return res.data;
-};
-export const createNewTodo = async (data: any) => {
-  const res = await axiosService.post(`todo`, data);
-
-  return res.data;
+  return response.data;
 };
 
-export const updateTodo = async (data: any, id: any) => {
-  console.log('xx- this call', data, id);
-  const res = await axiosService.patch(`todo/${id}`, data);
+export const createNewTodo = async (data: Todo) => {
+  const response = await axiosService.post(`todo`, data);
 
-  return res.data;
+  return response.data;
 };
 
-export const deleteTodo = async (id: any) => {
-  console.log('xx- this call', id);
-  const res = await axiosService.delete(`todo/${id}`);
+export const updateTodoRequest = async (data: Todo, id: number) => {
+  const response = await axiosService.patch(`todo/${id}`, data);
 
-  return res.data;
+  return response.data;
+};
+
+export const deleteTodoRequest = async (id: number) => {
+  const response = await axiosService.delete(`todo/${id}`);
+
+  return response.data;
 };

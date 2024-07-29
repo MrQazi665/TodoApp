@@ -1,52 +1,75 @@
 import {call, put, takeEvery} from 'redux-saga/effects';
 
-import {Alert} from 'react-native';
-import {setItemInStorage} from '../../../utilities/storage-service';
-import {StorageKeys} from '../../../enums';
 import {todoCreators, todoTypes} from './todo.action';
-import {createNewTodo, deleteTodo, getAllTodos, updateTodo} from './todo.api';
+import {
+  createNewTodo,
+  deleteTodoRequest,
+  getTodoListing,
+  updateTodoRequest,
+} from './todo.api';
+import {
+  DeleteTodoActionParam,
+  GetListingActionParam,
+  PostTodoActionParam,
+  UpdateTodoActionParam,
+} from '../interface';
 
 export function* watchTodo() {
-  yield takeEvery(todoTypes.GET_ALL_TODO, getAllTodo);
-  yield takeEvery(todoTypes.NEW_TODO_CREATE, newTodoCreate);
-  yield takeEvery(todoTypes.TODO_UPDATE, todoUpdate);
-  yield takeEvery(todoTypes.TODO_DELETE, todoDelete);
+  yield takeEvery(todoTypes.GET_ALL_TODOS, getAllTodos);
+  yield takeEvery(todoTypes.ADD_TODO, addTodo);
+  yield takeEvery(todoTypes.UPDATE_TODO, updateTodo);
+  yield takeEvery(todoTypes.DELETE_TODO, deleteTodo);
 }
 
-function* getAllTodo({params}: any): any {
+function* getAllTodos({
+  params,
+}: GetListingActionParam): Generator<any, void, any> {
   try {
-    const response = yield call(getAllTodos, params);
-    yield put(todoCreators.getAllTodoSuccess(response.data));
+    const response = yield call(getTodoListing, params);
+
+    yield put(
+      todoCreators.getAllTodosSuccess({
+        response: response.data,
+        append: params?.append,
+      }),
+    );
   } catch (error) {
-    yield put(todoCreators.getAllTodoFailure(error));
+    yield put(todoCreators.getAllTodosFailure(error));
   }
 }
 
-function* newTodoCreate({params}: any): any {
+function* addTodo({params}: PostTodoActionParam): Generator<any, void, any> {
   try {
-    const response = yield call(createNewTodo, params);
-
-    yield put(todoCreators.newTodoCreateSuccess(response.data));
+    const {todoPayload, resetForm, showToast} = params;
+    const response = yield call(createNewTodo, todoPayload);
+    resetForm();
+    showToast('success', 'Add todo successfully');
+    yield put(todoCreators.addTodoSuccess(response.data));
   } catch (error) {
-    yield put(todoCreators.newTodoCreateFailure(error));
+    yield put(todoCreators.addTodoFailure(error));
   }
 }
 
-function* todoUpdate({params}: any): any {
+function* updateTodo({
+  params,
+}: UpdateTodoActionParam): Generator<any, void, any> {
   try {
-    const response = yield call(updateTodo, params.data, params.id);
+    const response = yield call(updateTodoRequest, params.data, params.id);
 
-    yield put(todoCreators.todoUpdateSuccess(response.data));
+    yield put(todoCreators.updateTodoSuccess(response.data));
   } catch (error) {
-    yield put(todoCreators.todoUpdateFailure(error));
+    yield put(todoCreators.updateTodoFailure(error));
   }
 }
-function* todoDelete({params}: any): any {
-  try {
-    const response = yield call(deleteTodo, params.id);
 
-    yield put(todoCreators.todoDeleteSuccess(response.data));
+function* deleteTodo({
+  params,
+}: DeleteTodoActionParam): Generator<any, void, any> {
+  try {
+    const response = yield call(deleteTodoRequest, params);
+
+    yield put(todoCreators.deleteTodoSuccess(params));
   } catch (error) {
-    yield put(todoCreators.todoDeleteFailure(error));
+    yield put(todoCreators.deleteTodoFailure(error));
   }
 }

@@ -2,22 +2,25 @@ import React from 'react';
 import {VStack, HStack, Text, IconButton, CloseIcon, Alert} from 'native-base';
 import {useToast} from 'native-base';
 
-const Toast = ({
+import {ToastProps} from './interface';
+
+const Toast: React.FC<ToastProps> = ({
   id,
-  status,
-  variant,
+  status = 'info',
+  variant = 'subtle',
   description,
   isClosable,
   ...rest
-}: any) => {
+}) => {
   const toast = useToast();
+
   return (
     <Alert
       maxWidth="100%"
       alignSelf="center"
       flexDirection="row"
       py={1}
-      status={status ? status : 'info'}
+      status={status}
       variant={variant}
       {...rest}>
       <VStack space={1} flexShrink={1} w="90%">
@@ -36,7 +39,7 @@ const Toast = ({
                   ? 'lightText'
                   : variant !== 'outline'
                   ? 'darkText'
-                  : null
+                  : undefined
               }>
               {description}
             </Text>

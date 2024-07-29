@@ -13,5 +13,5 @@ export interface Todo {
   title: string;
   description: string;
   completed: number;
-  user?: any;
+  user: User;
 }

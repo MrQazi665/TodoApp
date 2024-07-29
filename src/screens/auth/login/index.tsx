@@ -7,18 +7,17 @@ import {
 } from 'react-native-responsive-screen';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {ActivityIndicator} from 'react-native';
 
 import FormikFieldWrapper from '../../../components/molecules/formik-field-wrapper';
+import TodoFormTheme from '../../../components/theme/todo-form-theme';
+import Loader from '../../../components/loader';
+import useCustomToast from '../../../hooks/useCustomToast';
+import {loginValidationSchema} from '../../../utilities/yup';
 import EyeSvg from '../../../assets/icons/svg/eye.svg';
 import EyeOffSvg from '../../../assets/icons/svg/eyeOff.svg';
-import TodoFormTheme from '../../../components/theme/todo-form-theme';
-import {loginValidationSchema} from '../../../utilities/yup';
+import {IInitialState} from '../../../redux/store/initialState/types';
 import {authCreators} from '../redux/auth.action';
 import {ILoginValues} from '../interface';
-import useCustomToast from '../../../hooks/useCustomToast';
-import {IInitialState} from '../../../redux/store/initialState/types';
-import {themeColors} from '../../../config/theme';
 
 const Login = () => {
   const navigation: any = useNavigation();
@@ -65,11 +64,7 @@ const Login = () => {
               colorScheme="blue"
               disabled={isAuthenticating}
               onPress={() => handleSubmit()}>
-              {isAuthenticating ? (
-                <ActivityIndicator size={'small'} color={themeColors.white} />
-              ) : (
-                'Sign in'
-              )}
+              {isAuthenticating ? <Loader /> : 'Sign in'}
             </Button>
           </View>
         )}

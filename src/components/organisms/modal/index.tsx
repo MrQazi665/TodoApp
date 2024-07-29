@@ -1,14 +1,18 @@
 import React from 'react';
 import {Button, Modal} from 'native-base';
-import {themeColors} from '../../../config/theme';
 
-const NativeModal = ({
+import {themeColors} from '../../../config/theme';
+import Loader from '../../loader';
+import {NativeModalProps} from './interface';
+
+const NativeModal: React.FC<NativeModalProps> = ({
   modalVisible,
   onClose,
   handleSubmit,
   children,
   headerTitle,
-}: any) => {
+  isUpdatingTodo,
+}) => {
   return (
     <Modal isOpen={modalVisible} onClose={onClose} size="lg">
       <Modal.Content>
@@ -25,8 +29,8 @@ const NativeModal = ({
             <Button
               onPress={handleSubmit}
               bg={themeColors.themeBlue}
-              variant={'solid'}>
-              Save
+              variant="solid">
+              {isUpdatingTodo ? <Loader /> : 'Save'}
             </Button>
           </Button.Group>
         </Modal.Footer>

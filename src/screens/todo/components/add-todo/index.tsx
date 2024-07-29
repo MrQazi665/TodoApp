@@ -1,18 +1,24 @@
 import React from 'react';
 import {Button, View} from 'native-base';
 import {Formik} from 'formik';
+import {useSelector} from 'react-redux';
 
+import Loader from '../../../../components/loader';
 import FormikFieldWrapper from '../../../../components/molecules/formik-field-wrapper';
 import {todoValidations} from '../../../../utilities/yup';
-import {styles} from './styles';
-import {Todo} from '../../../../types';
+import {IInitialState} from '../../../../redux/store/initialState/types';
 import {TodoFormValues} from '../../interface';
+import {styles} from './styles';
 
 interface AddTodoProps {
-  onAdd: (todo: TodoFormValues) => void;
+  onAdd: (todo: TodoFormValues, resetForm: () => void) => void;
 }
 
 const AddTodo: React.FC<AddTodoProps> = ({onAdd}) => {
+  const isAddingTodo = useSelector(
+    (state: IInitialState) => state.loading.isAddingTodo,
+  );
+
   return (
     <View style={styles.container}>
       <Formik
@@ -22,16 +28,23 @@ const AddTodo: React.FC<AddTodoProps> = ({onAdd}) => {
         }}
         validationSchema={todoValidations}
         onSubmit={(values, {resetForm}) => {
-          onAdd(values);
-          resetForm();
+          onAdd(values, resetForm);
         }}>
         {({handleSubmit}) => (
           <View>
-            <FormikFieldWrapper name="title" label="Todo Title" />
-            <FormikFieldWrapper name="description" label="Todo Description" />
+            <FormikFieldWrapper name="title" label="Todo Title" required />
+            <FormikFieldWrapper
+              name="description"
+              label="Todo Description"
+              required
+            />
 
-            <Button mt="3" size={'lg'} onPress={() => handleSubmit()}>
-              Add Todo
+            <Button
+              mt="3"
+              size={'lg'}
+              onPress={() => handleSubmit()}
+              disabled={isAddingTodo}>
+              {isAddingTodo ? <Loader /> : 'Add Todo'}
             </Button>
           </View>
         )}

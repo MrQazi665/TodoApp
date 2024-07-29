@@ -1,5 +1,4 @@
-import {UserWithToken} from '../../../screens/auth/interface';
-import {User} from '../../../types';
+import {Todo, User} from '../../../types';
 
 export interface IInitialState {
   auth: IAuthStates;
@@ -18,11 +17,16 @@ export interface IAuthStates {
 
 export interface ILoadingStates {
   isAuthenticating: boolean;
+  isAddingTodo: boolean;
+  isFetchingTodos: boolean;
+  isUpdatingTodo: boolean;
+  isDeletingTodo: boolean;
 }
 export interface ITodoStates {
   todoData: {
-    data: any;
+    data: Todo[];
     page: number;
     totalRecords: any;
   };
+  itemId: number | null;
 }
