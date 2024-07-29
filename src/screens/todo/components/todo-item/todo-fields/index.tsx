@@ -9,7 +9,7 @@ const TodoFields = () => {
       <FormikFieldWrapper
         name="title"
         label="Title"
-        placeholder="Example"
+        placeholder="Title"
         required
         mt={0.1}
       />
