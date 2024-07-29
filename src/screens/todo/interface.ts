@@ -23,6 +23,7 @@ export interface UpdateTodoActionParam {
   params: {
     data: Todo;
     id: number;
+    showToast: (type: string, message: string) => void;
   };
   type: string;
 }

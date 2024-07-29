@@ -50,7 +50,9 @@ const TodoScreen: React.FC = () => {
       description: updatedTodo.description,
     };
 
-    dispatch(todoCreators.updateTodo({id: updatedTodo.id, data: data}));
+    dispatch(
+      todoCreators.updateTodo({id: updatedTodo.id, data: data, showToast}),
+    );
   };
 
   const deleteTodo = (id: number) => {

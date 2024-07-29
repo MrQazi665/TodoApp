@@ -39,13 +39,15 @@ function* getAllTodos({
 }
 
 function* addTodo({params}: PostTodoActionParam): Generator<any, void, any> {
+  const {todoPayload, resetForm, showToast} = params;
   try {
-    const {todoPayload, resetForm, showToast} = params;
     const response = yield call(createNewTodo, todoPayload);
     resetForm();
     showToast('success', 'Add todo successfully');
+
     yield put(todoCreators.addTodoSuccess(response.data));
-  } catch (error) {
+  } catch (error: any) {
+    showToast('error', error.response.data.message);
     yield put(todoCreators.addTodoFailure(error));
   }
 }
@@ -53,11 +55,18 @@ function* addTodo({params}: PostTodoActionParam): Generator<any, void, any> {
 function* updateTodo({
   params,
 }: UpdateTodoActionParam): Generator<any, void, any> {
+  const showToast = params?.showToast;
   try {
     const response = yield call(updateTodoRequest, params.data, params.id);
+    if (typeof showToast == 'function') {
+      showToast('success', 'Update todo successfully');
+    }
 
     yield put(todoCreators.updateTodoSuccess(response.data));
-  } catch (error) {
+  } catch (error: any) {
+    if (typeof showToast == 'function') {
+      showToast('error', error.response.data.message);
+    }
     yield put(todoCreators.updateTodoFailure(error));
   }
 }
@@ -66,7 +75,7 @@ function* deleteTodo({
   params,
 }: DeleteTodoActionParam): Generator<any, void, any> {
   try {
-    const response = yield call(deleteTodoRequest, params);
+    yield call(deleteTodoRequest, params);
 
     yield put(todoCreators.deleteTodoSuccess(params));
   } catch (error) {
