@@ -1,16 +1,13 @@
 import React, {useState} from 'react';
 import {Pressable} from 'react-native';
 import {View, Text, Checkbox, Spinner} from 'native-base';
-import {Formik} from 'formik';
 import {useSelector} from 'react-redux';
 
-import NativeModal from '../../../../components/organisms/modal';
-import FormikFieldWrapper from '../../../../components/molecules/formik-field-wrapper';
 import {IInitialState} from '../../../../redux/store/initialState/types';
-import {todoValidations} from '../../../../utilities/yup';
 import EditIcon from '../../../../assets/icons/svg/edit.svg';
 import DeleteIcon from '../../../../assets/icons/svg/delete.svg';
 import {themeColors} from '../../../../config/theme';
+import UpdateTodo from './component/update.todo';
 import {TodoItemProps} from './interface';
 import {styles} from './styles';
 
@@ -69,7 +66,6 @@ const TodoItem: React.FC<TodoItemProps> = ({
                 fontSize={13}
                 color={themeColors.themeBlue}
                 fontWeight={'extrabold'}>
-                By {todo.user?.username} on{' '}
                 {new Date(todo.createdAt).toLocaleDateString()}
               </Text>
 
@@ -85,32 +81,12 @@ const TodoItem: React.FC<TodoItemProps> = ({
         </View>
       </Pressable>
 
-      <Formik
-        initialValues={{title: todo.title, description: todo.description}}
-        validationSchema={todoValidations}
-        onSubmit={values => {
-          onUpdate({...todo, ...values});
-          setIsEditing(false);
-        }}>
-        {({handleSubmit}) => (
-          <View>
-            <NativeModal
-              modalVisible={isEditing}
-              headerTitle={'Update Todo'}
-              handleSubmit={handleSubmit}
-              isUpdatingTodo={isUpdatingTodo}
-              onClose={() => setIsEditing(false)}>
-              <View>
-                <FormikFieldWrapper name="title" label="Todo Title" mt={0.1} />
-                <FormikFieldWrapper
-                  name="description"
-                  label="Todo Description"
-                />
-              </View>
-            </NativeModal>
-          </View>
-        )}
-      </Formik>
+      <UpdateTodo
+        todo={todo}
+        onUpdate={onUpdate}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
+      />
     </View>
   );
 };

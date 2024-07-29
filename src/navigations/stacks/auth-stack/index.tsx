@@ -6,7 +6,7 @@ const AuthStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false, animation: 'slide_from_right'}}
-      initialRouteName="Register">
+      initialRouteName="Login">
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
     </Stack.Navigator>

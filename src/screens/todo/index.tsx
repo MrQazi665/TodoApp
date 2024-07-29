@@ -62,6 +62,7 @@ const TodoScreen: React.FC = () => {
   const handleLogout = () => {
     removeItemFromStorage(StorageKeys.User);
     dispatch(authCreators.handleSignOut());
+    dispatch(todoCreators.getAllTodosSuccess());
   };
 
   const onEndReached = () => {

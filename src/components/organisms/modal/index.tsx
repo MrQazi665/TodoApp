@@ -1,17 +1,12 @@
 import React from 'react';
-import {Button, Modal} from 'native-base';
-
-import {themeColors} from '../../../config/theme';
-import Loader from '../../loader';
+import {Modal} from 'native-base';
 import {NativeModalProps} from './interface';
 
 const NativeModal: React.FC<NativeModalProps> = ({
   modalVisible,
   onClose,
-  handleSubmit,
   children,
   headerTitle,
-  isUpdatingTodo,
 }) => {
   return (
     <Modal isOpen={modalVisible} onClose={onClose} size="lg">
@@ -21,19 +16,6 @@ const NativeModal: React.FC<NativeModalProps> = ({
           {headerTitle}
         </Modal.Header>
         <Modal.Body>{children}</Modal.Body>
-        <Modal.Footer>
-          <Button.Group space={2}>
-            <Button variant="outline" onPress={onClose}>
-              Cancel
-            </Button>
-            <Button
-              onPress={handleSubmit}
-              bg={themeColors.themeBlue}
-              variant="solid">
-              {isUpdatingTodo ? <Loader /> : 'Save'}
-            </Button>
-          </Button.Group>
-        </Modal.Footer>
       </Modal.Content>
     </Modal>
   );

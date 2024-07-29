@@ -79,7 +79,7 @@ function* deleteTodo({
     yield call(deleteTodoRequest, id);
     showToast('success', 'Delete todo successfully');
 
-    yield put(todoCreators.deleteTodoSuccess(params));
+    yield put(todoCreators.deleteTodoSuccess(id));
   } catch (error: any) {
     showToast('error', error.response.data.message);
     yield put(todoCreators.deleteTodoFailure(error));

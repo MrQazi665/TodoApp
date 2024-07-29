@@ -8,16 +8,18 @@ import {Todo} from '../../../types';
 export const INITIAL_STATE = initialState.todo;
 
 const getAllTodosSuccess = (state: ITodoStates, {info}: {info: any}) => {
-  const response = info.response;
+  const response = info?.response;
   return {
     ...state,
-    todoData: {
-      data: info?.append
-        ? [...(state.todoData.data || []), ...(response.data || [])]
-        : response.data,
-      page: response.pagination.page,
-      totalRecords: response.pagination.totalRecords,
-    },
+    todoData: response
+      ? {
+          data: info?.append
+            ? [...(state.todoData.data || []), ...(response.data || [])]
+            : response.data,
+          page: response.pagination.page,
+          totalRecords: response.pagination.totalRecords,
+        }
+      : INITIAL_STATE.todoData,
   };
 };
 
