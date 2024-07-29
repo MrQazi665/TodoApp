@@ -8,7 +8,7 @@ const commonColors = {
 
 export const themeColors = {
   ...commonColors,
-  themeBlue: '#1877F2',
+  themeBlue: '#1c4ed8',
   primaryBase: '#E7F1FE',
   blue100: '#CFE2FC',
 

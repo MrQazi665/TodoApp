@@ -18,6 +18,7 @@ import {ISignupValues} from '../interface';
 import useCustomToast from '../../../hooks/useCustomToast';
 import {IInitialState} from '../../../redux/store/initialState/types';
 import Loader from '../../../components/loader';
+import {themeColors} from '../../../config/theme';
 
 const SignUpScreen = () => {
   const navigation: any = useNavigation();
@@ -78,7 +79,7 @@ const SignUpScreen = () => {
         </Text>
         <Text
           fontSize="sm"
-          color="blue.500"
+          color={themeColors.themeBlue}
           onPress={() => navigation.navigate('Login')}>
           Login here
         </Text>

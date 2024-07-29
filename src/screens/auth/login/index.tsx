@@ -18,6 +18,7 @@ import EyeOffSvg from '../../../assets/icons/svg/eyeOff.svg';
 import {IInitialState} from '../../../redux/store/initialState/types';
 import {authCreators} from '../redux/auth.action';
 import {ILoginValues} from '../interface';
+import {themeColors} from '../../../config/theme';
 
 const Login = () => {
   const navigation: any = useNavigation();
@@ -75,7 +76,7 @@ const Login = () => {
         </Text>
         <Text
           fontSize="sm"
-          color="blue.500"
+          color={themeColors.themeBlue}
           onPress={() => navigation.navigate('Register')}>
           Sign up
         </Text>
