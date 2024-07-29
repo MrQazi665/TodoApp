@@ -40,12 +40,15 @@ const FormInput: React.FC<FormInputWithLabelProps> = memo(
             <View
               style={[styles.inputContainer, {opacity: disabled ? 0.6 : 1}]}>
               <Input
-                style={{fontSize: wp(3.5)}}
+                style={[
+                  type === 'textArea' && styles.textArea,
+                  {fontSize: wp(3.5)},
+                ]}
                 w={{
                   base: '100%',
                   md: '15%',
                 }}
-                h={'42px'}
+                h={type === 'textArea' ? 'auto' : '42px'}
                 placeholder={placeholder}
                 onChangeText={onChangeText}
                 onBlur={onBlur}
@@ -53,13 +56,14 @@ const FormInput: React.FC<FormInputWithLabelProps> = memo(
                 keyboardType={keyboardType}
                 onFocus={onFocus}
                 secureTextEntry={secureTextEntry}
+                multiline={type === 'textArea'}
+                numberOfLines={type === 'textArea' ? 4 : 1}
                 scrollEnabled={false}
                 InputRightElement={
                   inputRightIcon ? (
                     <Pressable
                       onPress={inputRightIconOperations}
-                      style={styles.inputIcon}
-                      hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+                      style={styles.inputIcon}>
                       {inputRightIcon}
                     </Pressable>
                   ) : (

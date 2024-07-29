@@ -2,10 +2,6 @@ import React, {useState} from 'react';
 import {Button, Text, HStack, View} from 'native-base';
 import {Formik} from 'formik';
 import {useNavigation} from '@react-navigation/native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 import {useDispatch, useSelector} from 'react-redux';
 
 import TodoFormTheme from '../../../components/theme/todo-form-theme';
@@ -19,6 +15,8 @@ import useCustomToast from '../../../hooks/useCustomToast';
 import {IInitialState} from '../../../redux/store/initialState/types';
 import Loader from '../../../components/loader';
 import {themeColors} from '../../../config/theme';
+import {Route} from '../../../enums';
+import AuthFormFields from '../components/auth-form-fields';
 
 const SignUpScreen = () => {
   const navigation: any = useNavigation();
@@ -46,20 +44,9 @@ const SignUpScreen = () => {
         onSubmit={onSubmit}>
         {({handleSubmit}) => (
           <View>
-            <FormikFieldWrapper name="username" label="Username" mt={0.1} />
-            <FormikFieldWrapper name="email" label="Email" />
-            <FormikFieldWrapper
-              name="password"
-              label="Password"
-              inputRightIcon={
-                showPassword ? (
-                  <EyeOffSvg width={wp(5.5)} height={hp(3.3)} />
-                ) : (
-                  <EyeSvg width={wp(5.5)} height={hp(3.3)} />
-                )
-              }
-              secureTextEntry={!showPassword}
-              inputRightIconOperations={() => setShowPassword(!showPassword)}
+            <AuthFormFields
+              showPassword={showPassword}
+              setShowPassword={setShowPassword}
             />
 
             <Button
@@ -80,7 +67,7 @@ const SignUpScreen = () => {
         <Text
           fontSize="sm"
           color={themeColors.themeBlue}
-          onPress={() => navigation.navigate('Login')}>
+          onPress={() => navigation.navigate(Route.Login)}>
           Login here
         </Text>
       </HStack>

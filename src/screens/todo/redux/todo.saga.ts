@@ -43,6 +43,8 @@ function* addTodo({params}: PostTodoActionParam): Generator<any, void, any> {
   try {
     const response = yield call(createNewTodo, todoPayload);
     resetForm();
+    yield put(todoCreators.getAllTodos({page: 1}));
+
     showToast('success', 'Add todo successfully');
 
     yield put(todoCreators.addTodoSuccess(response.data));

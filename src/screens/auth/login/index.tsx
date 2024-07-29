@@ -1,24 +1,19 @@
 import React, {useState} from 'react';
 import {Button, Text, HStack, View} from 'native-base';
 import {Formik} from 'formik';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 
-import FormikFieldWrapper from '../../../components/molecules/formik-field-wrapper';
 import TodoFormTheme from '../../../components/theme/todo-form-theme';
 import Loader from '../../../components/loader';
 import useCustomToast from '../../../hooks/useCustomToast';
 import {loginValidationSchema} from '../../../utilities/yup';
-import EyeSvg from '../../../assets/icons/svg/eye.svg';
-import EyeOffSvg from '../../../assets/icons/svg/eyeOff.svg';
 import {IInitialState} from '../../../redux/store/initialState/types';
 import {authCreators} from '../redux/auth.action';
 import {ILoginValues} from '../interface';
 import {themeColors} from '../../../config/theme';
+import {Route} from '../../../enums';
+import AuthFormFields from '../components/auth-form-fields';
 
 const Login = () => {
   const navigation: any = useNavigation();
@@ -44,19 +39,10 @@ const Login = () => {
         onSubmit={onSubmit}>
         {({handleSubmit}) => (
           <View>
-            <FormikFieldWrapper name="username" label="Username" mt={0.1} />
-            <FormikFieldWrapper
-              name="password"
-              label="Password"
-              inputRightIcon={
-                showPassword ? (
-                  <EyeOffSvg width={wp(5.5)} height={hp(3.3)} />
-                ) : (
-                  <EyeSvg width={wp(5.5)} height={hp(3.3)} />
-                )
-              }
-              secureTextEntry={!showPassword}
-              inputRightIconOperations={() => setShowPassword(!showPassword)}
+            <AuthFormFields
+              showPassword={showPassword}
+              setShowPassword={setShowPassword}
+              ignoreEmail={true}
             />
 
             <Button
@@ -77,7 +63,7 @@ const Login = () => {
         <Text
           fontSize="sm"
           color={themeColors.themeBlue}
-          onPress={() => navigation.navigate('Register')}>
+          onPress={() => navigation.navigate(Route.Register)}>
           Sign up
         </Text>
       </HStack>

@@ -4,11 +4,11 @@ import {useSelector} from 'react-redux';
 import {Formik} from 'formik';
 
 import NativeModal from '../../../../../../components/organisms/modal';
-import FormikFieldWrapper from '../../../../../../components/molecules/formik-field-wrapper';
 import {IInitialState} from '../../../../../../redux/store/initialState/types';
 import {todoValidations} from '../../../../../../utilities/yup';
 import {themeColors} from '../../../../../../config/theme';
 import {Todo} from '../../../../../../types';
+import TodoFields from '../../todo-fields';
 
 const UpdateTodo = ({
   todo,
@@ -47,17 +47,7 @@ const UpdateTodo = ({
         }}>
         {({handleSubmit}) => (
           <View>
-            <FormikFieldWrapper
-              name="title"
-              label="Todo Title"
-              required
-              mt={0.1}
-            />
-            <FormikFieldWrapper
-              name="description"
-              label="Todo Description"
-              required
-            />
+            <TodoFields />
             <Button.Group space={2} justifyContent={'flex-end'} mt={4}>
               <Button variant="outline" onPress={() => setIsEditing(false)}>
                 Cancel

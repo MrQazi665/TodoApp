@@ -26,5 +26,5 @@ export const signupValidationSchema = Yup.object().shape({
 
 export const todoValidations = Yup.object().shape({
   title: Yup.string().required('Title is required'),
-  description: Yup.string().required('Description is required'),
+  description: Yup.string().required('Description is required').min(5),
 });

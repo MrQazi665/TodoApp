@@ -4,11 +4,11 @@ import {Formik} from 'formik';
 import {useSelector} from 'react-redux';
 
 import Loader from '../../../../components/loader';
-import FormikFieldWrapper from '../../../../components/molecules/formik-field-wrapper';
 import {todoValidations} from '../../../../utilities/yup';
 import {IInitialState} from '../../../../redux/store/initialState/types';
 import {TodoFormValues} from '../../interface';
 import {styles} from './styles';
+import TodoFields from '../todo-item/todo-fields';
 
 interface AddTodoProps {
   onAdd: (todo: TodoFormValues, resetForm: () => void) => void;
@@ -32,12 +32,7 @@ const AddTodo: React.FC<AddTodoProps> = ({onAdd}) => {
         }}>
         {({handleSubmit}) => (
           <View>
-            <FormikFieldWrapper name="title" label="Todo Title" required />
-            <FormikFieldWrapper
-              name="description"
-              label="Todo Description"
-              required
-            />
+            <TodoFields />
 
             <Button
               mt="3"
